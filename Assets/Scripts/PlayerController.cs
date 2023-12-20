@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float _moveSpeed;
 
+    public event Action noiseMade;
+
     void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -26,6 +29,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetButtonDown("Fire1")) {
+            OnNoiseMade();
+        }
         Vector3 inputDirection = new Vector3()
         {
             x = Input.GetAxis("Horizontal"),
@@ -36,5 +42,13 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = inputDirection * _moveSpeed * Time.deltaTime;
 
         _characterController.Move(velocity);
+
+
     }
+
+    void OnNoiseMade() {
+        noiseMade?.Invoke();
+    }
+
 }
+    
